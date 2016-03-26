@@ -10,6 +10,7 @@
     <!-- [END gcm_permission] -->
 
     <application
+        android:name="com.trackwheels.kinvey.KinveyClient"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

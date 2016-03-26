@@ -15,13 +15,21 @@ import android.view.View;
 
 import com.trackwheels.R;
 
+import com.kinvey.android.Client;
+import com.trackwheels.kinvey.KinveyClient;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Client kinveyClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        kinveyClient = ((KinveyClient) getApplication()).getKinveyClient();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
