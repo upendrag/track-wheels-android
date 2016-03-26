@@ -4,6 +4,7 @@ package com.trackwheels.utilities;
  * Created by shruthi on 26/3/16.
  */
 public class Constants {
+    final String LOGTAG = "TrackMe";
     public static class IntentKey {
 
     }
