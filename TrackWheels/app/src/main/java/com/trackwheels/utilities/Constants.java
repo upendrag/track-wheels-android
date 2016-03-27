@@ -4,7 +4,7 @@ package com.trackwheels.utilities;
  * Created by shruthi on 26/3/16.
  */
 public class Constants {
-    final String LOGTAG = "TrackMe";
+    public final String LOGTAG = "TrackMe";
 
     public static class SharedPref {
         public static final String PREF_NAME = "TrackWheels";
