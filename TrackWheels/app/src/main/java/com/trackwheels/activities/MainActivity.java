@@ -1,5 +1,9 @@
 package com.trackwheels.activities;
 
+
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,7 +21,7 @@ import com.trackwheels.R;
 import com.trackwheels.utilities.Utility;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AllChannelsFragment.OnFragmentInteractionListener {
     Context ctx = MainActivity.this;
 
     @Override
@@ -90,24 +95,42 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment fragment = null;
 
-        if (id == R.id.nav_my_channels) {
-            Intent intent = new Intent(MainActivity.this, MyChannelsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_channels) {
+        switch (id) {
+            case R.id.nav_my_channels:
+                break;
+            case R.id.nav_options:
+                break;
+            case R.id.nav_channels:
+                fragment = AllChannelsFragment.newInstance(ctx, "S", "A");
+                break;
+            case R.id.nav_signin:
+                if (!Utility.isUserSignedIn(ctx)) {
+                    Intent intent = new Intent(MainActivity.this, SigninActivity.class);
+                    startActivity(intent);
+                }
+                break;
 
-        } else if (id == R.id.nav_options) {
-
-        } else if (id == R.id.nav_signin) {
-            if(!Utility.isUserSignedIn(ctx)) {
-                Intent intent = new Intent(MainActivity.this, SigninActivity.class);
-                startActivity(intent);
-            }
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.Fragment_container, fragment);
+            transaction.commit();
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+
+        }
 
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+        Log.i("Filter", id);
     }
 }

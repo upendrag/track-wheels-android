@@ -34,7 +34,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.trackwheels.R;
 import com.trackwheels.gcm.*;
+import com.trackwheels.kinvey.KinveyClient;
 import com.trackwheels.utilities.Constants;
+import com.trackwheels.utilities.Utility;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -49,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        Utility.client = ((KinveyClient) getApplication()).getKinveyClient();
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

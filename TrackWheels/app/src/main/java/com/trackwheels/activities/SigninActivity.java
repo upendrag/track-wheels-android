@@ -38,7 +38,8 @@ public class SigninActivity extends AuthorizedActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-        kinveyClient = ((KinveyClient) getApplication()).getKinveyClient();
+
+        kinveyClient = Utility.client;
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
