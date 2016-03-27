@@ -2,20 +2,23 @@ package com.trackwheels.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
-
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.kinvey.android.AsyncAppData;
+import com.kinvey.android.Client;
+import com.kinvey.android.callback.KinveyListCallback;
 import com.trackwheels.R;
-
+import com.trackwheels.adapters.ChannelAdapter;
+import com.trackwheels.entities.Channel;
+import com.trackwheels.utilities.Utility;
 
 
 /**
@@ -27,12 +30,14 @@ import com.trackwheels.R;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class AllChannels extends Fragment implements AbsListView.OnItemClickListener {
+public class AllChannelsFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Client mKinveyClient;
+    private static Context ctx;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -49,11 +54,12 @@ public class AllChannels extends Fragment implements AbsListView.OnItemClickList
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private ListAdapter mAdapter;
+    private ChannelAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static AllChannels newInstance(String param1, String param2) {
-        AllChannels fragment = new AllChannels();
+    public static AllChannelsFragment newInstance(Context context, String param1, String param2) {
+        AllChannelsFragment fragment = new AllChannelsFragment();
+        ctx = context;
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,7 +71,11 @@ public class AllChannels extends Fragment implements AbsListView.OnItemClickList
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public AllChannels() {
+
+
+    public AllChannelsFragment() {
+
+
     }
 
     @Override
@@ -87,13 +97,30 @@ public class AllChannels extends Fragment implements AbsListView.OnItemClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item, container, false);
-
-        // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
-        // Set OnItemClickListener so we can be notified on item clicks
+        mKinveyClient = Utility.client;
+        AsyncAppData<Channel> myevents = mKinveyClient.appData("channels", Channel.class);
+        myevents.get(new KinveyListCallback<Channel>() {
+            @Override
+            public void onSuccess(Channel[] result) {
+                Log.v("Filter", "received " + result.length + " events");
+                mAdapter = new ChannelAdapter(getActivity(), result);
+                (mListView).setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+                Log.e("Filter", "failed to fetch all", error);
+            }
+        });
+        // Set the adapter
         mListView.setOnItemClickListener(this);
+        // Set OnItemClickListener so we can be notified on item clicks
+
 
         return view;
     }
@@ -121,7 +148,7 @@ public class AllChannels extends Fragment implements AbsListView.OnItemClickList
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-//TODO            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(ChannelAdapter.ITEMS[position].getId());
         }
     }
 

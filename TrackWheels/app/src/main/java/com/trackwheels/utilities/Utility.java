@@ -1,7 +1,10 @@
 package com.trackwheels.utilities;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.kinvey.android.Client;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +16,7 @@ import java.io.UnsupportedEncodingException;
  * Created by shruthi on 26/3/16.
  */
 public class Utility {
-
+    public static Client client;
 
     public static String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
         Reader reader = null;

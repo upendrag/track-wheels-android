@@ -12,7 +12,7 @@ import com.kinvey.java.model.KinveyReference;
 
 import java.util.ArrayList;
 
-public class Channel extends GenericJson { // For Serialization
+public class Channel extends GenericJson {
 
     public class Notification extends GenericJson {
         @Key
@@ -103,9 +103,6 @@ public class Channel extends GenericJson { // For Serialization
     @Key
     private ArrayList<Stop> stops;
 
-    public Channel(){}  //GenericJson classes must have a public empty constructor
 
-    public void initAccountRef(Account account) {
-        this.account = new KinveyReference("accounts", account.get("_id").toString());
-    }
+    public Channel(){}  //GenericJson classes must have a public empty constructor
 }

@@ -18,11 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.trackwheels.R;
-import com.trackwheels.utilities.Constants;
 import com.trackwheels.utilities.Utility;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AllChannels.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AllChannelsFragment.OnFragmentInteractionListener {
     Context ctx = MainActivity.this;
 
     @Override
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_options:
                 break;
             case R.id.nav_channels:
-                fragment = AllChannels.newInstance("S", "A");
+                fragment = AllChannelsFragment.newInstance(ctx, "S", "A");
                 break;
             case R.id.nav_signin:
                 if (!Utility.isUserSignedIn(ctx)) {
